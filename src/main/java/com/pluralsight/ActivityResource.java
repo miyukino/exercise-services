@@ -16,15 +16,33 @@ public class ActivityResource {
 
     private ActivityRepository activityRepository = new ActivityRepositoryStub();
 
+    @DELETE
+    @Path("{activityId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response delete(@PathParam("activityId") String activityId) {
+        activityRepository.delete(activityId);
+
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("{activityId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response update(Activity activity) {
+        activity = activityRepository.update(activity);
+
+        return Response.ok().entity(activity).build();
+    }
+
+
     @POST
     @Path("activity")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Activity createActivity(Activity activity) {
         activityRepository.create(activity);
-
-        System.out.println(activity.getDescription());
-        System.out.println(activity.getDuration());
 
         return activity;
     }
